@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Month Todo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <button id="menuBtn">☰</button>
+  <h3 id="monthLabel"></h3>
+  <input id="searchInput" placeholder="Search project" />
+  <div>
+    <button id="prevMonth">◀</button>
+    <button id="nextMonth">▶</button>
+  </div>
+</header>
+<main>
+
+  <div class="side-menu" id="sideMenu">
+    <h3>Menu</h3>
+    <button onclick="exportData()">Export Backup</button><br>
+    <button onclick="exportMonth()">Export This Month</button><br>
+    <!-- <button onclick="toggleTheme()">Dark Mode</button><br><br> -->
+    <label for="importDataInput">Data Import</label>
+    <input type="file" id="importDataInput" onchange="importData(event)" />
+  </div>
+  
+  <div class="calendar" id="calendar"></div>
+  <button class="fab" id="addBtn">+</button>
+  
+  <div class="modal" id="addModal">
+    <button class="close-btn" onclick="closeAll()">✕</button>
+    <div class="modal-content">
+      <h3>Add Todo</h3>
+      <div class="input__group">
+        <div class="form-control">
+            <label>Date</label><input type="date" id="dateInput" />
+        </div>
+        <div class="form-control">
+            <label>Project Name</label><input id="projectInput" />
+        </div>
+      </div>
+      <label>Category</label>
+      <select id="categorySelect">
+        <option value="completed">Completed</option>
+        <option value="inProgress">In Progress</option>
+        <option value="tomorrow">Tomorrow</option>
+        <option value="blockers">Blockers</option>
+        <option value="notes">Notes</option>
+      </select>
+      <label>Task</label><textarea id="taskInput"></textarea>
+      <button class="primary" id="saveTodo">Save</button>
+    </div>
+  </div>
+  
+  <div class="modal" id="viewModal">
+    <button class="close-btn" onclick="closeAll()">✕</button>
+    <div class="modal-content" id="viewContent">
+    </div>
+  </div>
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
