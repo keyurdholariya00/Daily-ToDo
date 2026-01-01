@@ -15,31 +15,43 @@ function fmt(d) {
   return `${y}-${m}-${day}`;
 }
 
-
 function render(){
   calendar.innerHTML='';
-  const first=new Date(year,month,1);
-  const days=new Date(year,month+1,0).getDate();
-  monthLabel.textContent=first.toLocaleString('default',{month:'long',year:'numeric'});
+  const first = new Date(year,month,1);
+  const days  = new Date(year,month+1,0).getDate();
+  monthLabel.textContent = first.toLocaleString('default',{month:'long',year:'numeric'});
+  const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  weekDays.forEach(d=>{
+    const hd=document.createElement('div');
+    hd.className='day-name';
+    hd.innerText=d;
+    calendar.appendChild(hd);
+  });
+  const startIndex = first.getDay();
+  for(let i=0;i<startIndex;i++){
+    calendar.appendChild(document.createElement('div'));
+  }
   for(let i=1;i<=days;i++){
     const d = new Date(year, month, i);
     d.setHours(0,0,0,0);
     const div=document.createElement('div');
     div.className='day';
-    div.innerHTML=`<div class=date-number>${i}</div>`;
-    if(fmt(d)===fmt(today))div.classList.add('today');
-    if(d>today){div.classList.add('disabled');}
-    else{div.onclick=()=>openView(d);}
+    div.innerHTML=`<div class="date-number">${i}</div>`;
+    if(fmt(d)===fmt(today)) div.classList.add('today');
+    if(d>today){
+      div.classList.add('disabled');
+    }else{
+      div.onclick=()=>openView(d);
+    }
     const key=fmt(d);
     if(todos[key]){
-      const projects = Object.keys(todos[key]);
-      const label = document.createElement('div');
-      label.className = 'project-label';
-      projects.forEach((pro) => {
-        const proName = document.createElement('p');
-        proName.innerText = pro
-        label.appendChild(proName);
-      })
+      const label=document.createElement('div');
+      label.className='project-label';
+      Object.keys(todos[key]).slice(0,3).forEach(p=>{
+        const el=document.createElement('p');
+        el.innerText=p;
+        label.appendChild(el);
+      });
       div.appendChild(label);
     }
     calendar.appendChild(div);
@@ -57,11 +69,13 @@ function openView(d){
     const t = data[p];
 
     html += `<h3>Project - ${p}</h3>`;
+    html += `<div class="pro--info">`;
     html += section('Tasks completed today', t.completed, selectedDate, p, 'completed');
     html += section('Tasks in progress (not finished yet)', t.inProgress, selectedDate, p, 'inProgress');
     html += section('Plan for tomorrow', t.tomorrow, selectedDate, p, 'tomorrow');
     html += section('Blockers', t.blockers, selectedDate, p, 'blockers');
     html += section('Notes', t.notes, selectedDate, p, 'notes');
+    html += `</div>`;
   }
 
   viewContent.innerHTML = html || '<p>No data</p>';
