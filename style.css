@@ -125,7 +125,10 @@ button:active {
     cursor: pointer;
     overflow: hidden;
 }
-
+.day-name {
+    font-size: 24px;
+    font-weight: 700;
+}
 .day::before {
     content: '';
     position: absolute;
@@ -213,16 +216,25 @@ button:active {
 .project-label p{
     margin: 0;
 }
+.project-label p {
+    background: var(--primary);
+    padding: 2px 4px;
+    border-radius: 5px;
+}
 .project-label{
     position:absolute;
     bottom:8px;
     left:8px;
     right:8px;
     font-size:11px;
-    padding:3px 6px;
-    background:var(--primary);
+    /* padding:3px 6px; */
+    /* background:var(--primary); */
     color:#fff;
-    border-radius:6px;
+    /* border-radius:6px; */
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: wrap;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -255,7 +267,7 @@ button:active {
     to { transform: translateY(0); opacity: 1; }
 }
 
-.modal-content h2{margin-top: 0;}
+.modal-content h2{margin: 0;}
 .modal-content h2, .modal-content h3 {
     background: linear-gradient(135deg, var(--primary-light), var(--accent));
     -webkit-background-clip: text;
@@ -338,12 +350,17 @@ textarea {
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
-.section {
+.pro--info {
     margin-top: 20px;
     padding: 16px;
     background: var(--bg);
     border-radius: 8px;
     border-left: 4px solid var(--primary);
+}
+
+.pro--info > .section + .section {
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
 }
 
 .section b {
