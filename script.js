@@ -95,26 +95,48 @@ function section(title, arr, dateKey, projectKey, categoryKey) {
     </div>
   `;
 }
+
 function openEditTask(date, project, category, index) {
   const oldText = todos[date][project][category][index];
 
   viewContent.innerHTML = `
     <h3>Edit Task</h3>
-    <p><b>${project}</b> – ${category}</p>
+    <p><b>${project}</b></p>
+
+    <label>Category</label>
+    <select id="editCategory">
+      <option value="completed" ${category==='completed'?'selected':''}>Tasks completed today</option>
+      <option value="inProgress" ${category==='inProgress'?'selected':''}>Tasks in progress</option>
+      <option value="tomorrow" ${category==='tomorrow'?'selected':''}>Plan for tomorrow</option>
+      <option value="blockers" ${category==='blockers'?'selected':''}>Blockers</option>
+      <option value="notes" ${category==='notes'?'selected':''}>Notes</option>
+    </select>
+
     <textarea id="editTaskText">${oldText}</textarea>
-    <button class="primary" onclick="saveEdit('${date}','${project}','${category}',${index})">
+
+    <button class="primary"
+      onclick="saveEdit('${date}','${project}','${category}',${index})">
       Save Changes
     </button>
   `;
 }
 
-function saveEdit(date, project, category, index) {
+function saveEdit(date, project, oldCategory, index) {
   const val = document.getElementById('editTaskText').value.trim();
+  const newCategory = document.getElementById('editCategory').value;
+
   if (!val) return alert('Task empty');
-  todos[date][project][category][index] = val;
+  if (oldCategory === newCategory) {
+    todos[date][project][oldCategory][index] = val;
+  } else {
+    todos[date][project][oldCategory].splice(index, 1);
+    todos[date][project][newCategory].push(val);
+  }
   localStorage.setItem('todos', JSON.stringify(todos));
   openView(new Date(date));
+  render();
 }
+
 
 saveTodo.onclick = () => {
   const p = projectInput.value.trim();
